@@ -31,6 +31,20 @@ jobs:
     - pushd cmavnode
     - git submodule update --init --recursive
     - popd
+    - git clone https://github.com/jbeder/yaml-cpp.git
+    - pushd yaml-cpp
+    - git checkout yaml-cpp-0.6.2
+    - popd
+    - git clone https://github.com/gabime/spdlog.git
+    - pushd spdlog
+    - git checkout v1.3.1
+    - popd
+    - git clone https://github.com/jarro2783/cxxopts.git
+    - pushd cxxopts
+    - git checkout v2.2.0
+    - popd
+    - git clone https://github.com/CopterExpress/libseek-thermal.git
+    - git clone https://github.com/cedricve/raspicam.git
     - git clone https://${GITHUB_USER}:${GITHUB_OAUTH_TOKEN}@github.com/CopterExpress/mavlink-switch.git
     - pushd mavlink-switch
     - git remote set-url origin https://github.com/CopterExpress/mavlink-switch.git
@@ -50,6 +64,8 @@ jobs:
     - git remote set-url origin https://github.com/CopterExpress/duocam-camera.git
     - git submodule update --init --recursive
     - popd
+    - popd
+    - pwd
     - docker pull ${DOCKER}
     - if [ -n "$(ls -A imgcache/*.zip)" ]; then mkdir -p images && cp imgcache/*.zip
       images; fi
@@ -87,7 +103,7 @@ jobs:
     - git clone https://${GITHUB_USER}:${GITHUB_OAUTH_TOKEN}@github.com/CopterExpress/duocam-mavlink.git
     - git clone https://${GITHUB_USER}:${GITHUB_OAUTH_TOKEN}@github.com/CopterExpress/duocam-camera.git
     script:
-      - PYTHONUNBUFFERED=1 python ./gen_changelog.py
+      # - PYTHONUNBUFFERED=1 python ./gen_changelog.py
 stages:
 - Build
 - Annotate

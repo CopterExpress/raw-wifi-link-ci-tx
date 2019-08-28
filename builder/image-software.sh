@@ -53,42 +53,25 @@ my_travis_retry() {
   return $result
 }
 
-echo_stamp "Install apt keys & repos"
+echo_stamp "Update apt"
 
-# TODO: This STDOUT consist 'OK'
-curl http://repo.coex.space/aptly_repo_signing.key 2> /dev/null | apt-key add -
-apt-get update \
-&& apt-get install --no-install-recommends -y -qq dirmngr=2.1.18-8~deb9u4 > /dev/null \
-&& apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-
-echo "deb http://packages.ros.org/ros/ubuntu stretch main" > /etc/apt/sources.list.d/ros-latest.list
-echo "deb http://repo.coex.space/rpi-ros-kinetic stretch main" > /etc/apt/sources.list.d/rpi-ros-kinetic.list
-echo "deb http://repo.coex.space/clever stretch main" > /etc/apt/sources.list.d/clever.list
-
-echo_stamp "Update apt cache"
-
-# TODO: FIX ERROR: /usr/bin/apt-key: 596: /usr/bin/apt-key: cannot create /dev/null: Permission denied
-apt-get update -qq
+apt-get update
 # && apt upgrade -y
 
 echo_stamp "Software installing"
 apt-get install --no-install-recommends -y \
-unzip=6.0-21 \
-zip=3.0-11 \
-screen=4.5.0-6 \
-byobu=5.112-1  \
-lsof=4.89+dfsg-0.1 \
+unzip \
+zip \
+screen \
+byobu  \
+lsof \
 git \
-dnsmasq=2.76-5+rpt1+deb9u1  \
-tmux=2.3-4 \
+dnsmasq \
+tmux \
 vim \
-cmake=3.7.2-1 \
+cmake \
 ltrace \
-python-rosdep \
-python-rosinstall-generator \
-python-wstool=0.1.17-1 \
-python-rosinstall=0.7.8-1 \
-build-essential=12.3 \
+build-essential \
 pigpio python-pigpio \
 i2c-tools \
 ntpdate \
@@ -104,16 +87,23 @@ libboost-thread-dev \
 libreadline-dev \
 socat \
 dnsmasq \
-openvpn \
 autoconf \
 automake \
 libtool \
 python3-future \
+libpcap-dev \
+wiringpi \
+libsodium-dev \
+libopencv-dev \
+libusb-1.0-0-dev \
+libsystemd-dev \
+libexiv2-dev \
+libv4l-dev \
 && echo_stamp "Everything was installed!" "SUCCESS" \
 || (echo_stamp "Some packages wasn't installed!" "ERROR"; exit 1)
 
-echo_stamp "Updating kernel to fix camera bug"
-apt-get install --no-install-recommends -y raspberrypi-kernel=1.20190401-1
+# echo_stamp "Updating kernel to fix camera bug"
+# apt-get install --no-install-recommends -y raspberrypi-kernel=1.20190401-1
 
 # Deny byobu to check available updates
 sed -i "s/updates_available//" /usr/share/byobu/status/status
@@ -133,24 +123,96 @@ echo_stamp "Check MAVLink repository status"
 cd /home/pi/mavlink && \
 git status
 
-echo_stamp "Build pymavlink"
-my_travis_retry pip install -r /home/pi/pymavlink/requirements.txt && \
-cd /home/pi/pymavlink && \
-git status && \
-MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
-|| (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
+# echo_stamp "Build pymavlink"
+# my_travis_retry pip install -r /home/pi/pymavlink/requirements.txt && \
+# cd /home/pi/pymavlink && \
+# git status && \
+# MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
+# || (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
 
-echo_stamp "Build mavlink-router"
-cd /home/pi/mavlink-router \
+# echo_stamp "Build mavlink-router"
+# cd /home/pi/mavlink-router \
+# && git status \
+# && mkdir build \
+# && ./autogen.sh \
+# && ./configure CFLAGS='-g -O2' \
+#   --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
+#   --prefix=/usr \
+# && make \
+# && make install \
+# || (echo_stamp "Failed to build cmavnode!" "ERROR"; exit 1)
+
+# echo_stamp "Build raw-wifi-link"
+# cd /home/pi/raw-wifi-link \
+# && git status \
+# && mkdir build \
+# && cd build \
+# && cmake .. \
+# && make install \
+# || (echo_stamp "Failed to build raw-wifi-link!" "ERROR"; exit 1)
+
+echo_stamp "Build spdlog"
+cd /home/pi/spdlog \
 && git status \
 && mkdir build \
-&& ./autogen.sh \
-&& ./configure CFLAGS='-g -O2' \
-  --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
-  --prefix=/usr \
-&& make \
+&& cd build \
+&& cmake -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_TESTS=OFF .. \
 && make install \
-|| (echo_stamp "Failed to build cmavnode!" "ERROR"; exit 1)
+|| (echo_stamp "Failed to build spdlog!" "ERROR"; exit 1)
+
+echo_stamp "Build yaml-cpp"
+cd /home/pi/yaml-cpp \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake -DYAML_CPP_BUILD_TESTS=OFF .. \
+&& make install \
+|| (echo_stamp "Failed to build yaml-cpp!" "ERROR"; exit 1)
+
+echo_stamp "Build cxxopts"
+cd /home/pi/cxxopts \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake -DCXXOPTS_BUILD_EXAMPLES=OFF -DCXXOPTS_BUILD_TESTS=OFF .. \
+&& make install \
+|| (echo_stamp "Failed to build cxxopts!" "ERROR"; exit 1)
+
+echo_stamp "Build libseek-thermal"
+cd /home/pi/libseek-thermal \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make install \
+|| (echo_stamp "Failed to build libseek-thermal!" "ERROR"; exit 1)
+
+echo_stamp "Build raspicam"
+cd /home/pi/raspicam \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make install \
+|| (echo_stamp "Failed to build raspicam!" "ERROR"; exit 1)
+
+echo_stamp "Build duocam-camera"
+cd /home/pi/duocam-camera \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make install \
+|| (echo_stamp "Failed to build duocam-camera!" "ERROR"; exit 1)
+
+echo_stamp "Build duocam-mavlink"
+cd /home/pi/duocam-mavlink -DNO_EXAMPLES=ON \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make install \
+|| (echo_stamp "Failed to build duocam-mavlink!" "ERROR"; exit 1)
 
 echo_stamp "Add .vimrc"
 cat << EOF > /home/pi/.vimrc
@@ -162,15 +224,6 @@ EOF
 echo_stamp "Change default keyboard layout to US"
 sed -i 's/XKBLAYOUT="gb"/XKBLAYOUT="us"/g' /etc/default/keyboard
 
-echo_stamp "Attempting to kill dirmngr"
-gpgconf --kill dirmngr
-# dirmngr is only used by apt-key, so we can safely kill it.
-# We ignore pkill's exit value as well.
-pkill -9 -f dirmngr || true
-
 echo_stamp "Enable services"
-systemctl enable mavlink-router \
-&& systemctl enable pigpiod \
-|| (echo_stamp "Failed to enable services!" "ERROR"; exit 1)
 
 echo_stamp "End of software installation"

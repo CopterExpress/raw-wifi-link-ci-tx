@@ -33,10 +33,10 @@ echo_stamp() {
 echo_stamp "#1 Write to /etc/wpa_supplicant/wpa_supplicant.conf"
 
 # TODO: Use wpa_cli insted direct file edit
-cat << EOF >> /etc/wpa_supplicant/wpa_supplicant.conf
+cat << EOF >> /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 network={
-    ssid="COEX-CS"
-    psk="coexstation"
+    ssid="RAW-WIFI-TX"
+    psk="rawwifitx"
     mode=2
     proto=RSN
     key_mgmt=WPA-PSK
@@ -50,15 +50,15 @@ echo_stamp "#2 Write STATIC to /etc/dhcpcd.conf"
 
 cat << EOF >> /etc/dhcpcd.conf
 interface wlan0
-static ip_address=192.168.11.1/24
+static ip_address=192.168.30.1/24
 EOF
 
 echo_stamp "#3 Write dhcp-config to /etc/dnsmasq.conf"
 
 cat << EOF >> /etc/dnsmasq.conf
 interface=wlan0
-address=/charging-station/192.168.11.1
-dhcp-range=192.168.11.100,192.168.11.200,12h
+address=/raw-wifi-tx/192.168.30.1
+dhcp-range=192.168.30.100,192.168.30.200,12h
 no-hosts
 filterwin2k
 bogus-priv

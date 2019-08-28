@@ -76,6 +76,9 @@ get_image ${IMAGE_PATH} ${SOURCE_IMAGE}
 # Make free space
 ${BUILDER_DIR}/image-resize.sh ${IMAGE_PATH} max '7G'
 
+# Temporary disable ld.so
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} exec ${SCRIPTS_DIR}'/image-ld.sh' disable
+
 # Copy cloned repository to the image
 # Include dotfiles in globs (asterisks)
 shopt -s dotglob
@@ -92,14 +95,24 @@ ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/pymavlink' '/home/
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/mavlink-router' '/home/pi/mavlink-router'
 # Copy cmavnode repository contents to the image
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/cmavnode' '/home/pi/cmavnode'
+# Copy yaml-cpp repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/yaml-cpp' '/home/pi/yaml-cpp'
+# Copy spdlog repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/spdlog' '/home/pi/spdlog'
+# Copy cxxopts repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/cxxopts' '/home/pi/cxxopts'
+# Copy libseek-thermal repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/libseek-thermal' '/home/pi/libseek-thermal'
+# Copy raspicam repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/raspicam' '/home/pi/raspicam'
 # Copy mavlink-switch repository contents to the image
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/mavlink-switch' '/home/pi/mavlink-switch'
 # Copy raw-wifi-link repository contents to the image
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/raw-wifi-link' '/home/pi/raw-wifi-link'
 # Copy duocam-mavlink repository contents to the image
-${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/duocam-mavlink' '/home/pi/duocam/duocam-mavlink'
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/duocam-mavlink' '/home/pi/duocam-mavlink'
 # Copy duocam-camera repository contents to the image
-${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/duocam-camera' '/home/pi/duocam/duocam-camera'
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/duocam-camera' '/home/pi/duocam-camera'
 # software install
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} exec ${SCRIPTS_DIR}'/image-software.sh'
 # network setup

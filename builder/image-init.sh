@@ -3,7 +3,7 @@
 #
 # Script for initialisation image
 #
-# Copyright (C) 2018 Copter Express Technologies
+# Copyright (C) 2019 Copter Express Technologies
 #
 # Author: Artem Smirnov <urpylka@gmail.com>
 #
@@ -30,12 +30,12 @@ echo_stamp() {
   echo -e ${TEXT}
 }
 
-echo_stamp "Write COEX charging station information"
+echo_stamp "Write RAW WiFi TX information"
 
 # COEX charging station image version
-echo "$1" >> /etc/coex_cs_version
+echo "$1" >> /etc/raw_wifi_tx
 # Origin image file name
-echo "${2%.*}" >> /etc/coex_cs_origin
+echo "${2%.*}" >> /etc/raw_wifi_tx
 
 echo_stamp "Write magic script to /etc/rc.local"
 MAGIC_SCRIPT="sudo /root/init_rpi.sh; sudo sed -i '/sudo \\\/root\\\/init_rpi.sh/d' /etc/rc.local && sudo reboot"
