@@ -49,8 +49,8 @@ LIB_DIR="${REPO_DIR}/lib"
 if [[ -z ${TRAVIS_TAG} ]]; then IMAGE_VERSION="$(cd ${REPO_DIR}; git log --format=%h -1)"; else IMAGE_VERSION="${TRAVIS_TAG}"; fi
 # IMAGE_VERSION="${TRAVIS_TAG:=$(cd ${REPO_DIR}; git log --format=%h -1)}"
 REPO_URL="$(cd ${REPO_DIR}; git remote --verbose | grep origin | grep fetch | cut -f2 | cut -d' ' -f1 | sed 's/git@github\.com\:/https\:\/\/github.com\//')"
-REPO_NAME="ros_cs"
-IMAGE_NAME="${REPO_NAME}_${IMAGE_VERSION}.img"
+REPO_NAME="raw-wifi-link-ci-tx"
+IMAGE_NAME="raw-wifi-link-tx_${IMAGE_VERSION}.img"
 IMAGE_PATH="${IMAGES_DIR}/${IMAGE_NAME}"
 
 get_image() {

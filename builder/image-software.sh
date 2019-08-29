@@ -123,33 +123,34 @@ echo_stamp "Check MAVLink repository status"
 cd /home/pi/mavlink && \
 git status
 
-# echo_stamp "Build pymavlink"
-# my_travis_retry pip install -r /home/pi/pymavlink/requirements.txt && \
-# cd /home/pi/pymavlink && \
-# git status && \
-# MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
-# || (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
+echo_stamp "Build pymavlink"
+my_travis_retry pip install -r /home/pi/pymavlink/requirements.txt && \
+cd /home/pi/pymavlink && \
+git status && \
+MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
+|| (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
 
-# echo_stamp "Build mavlink-router"
-# cd /home/pi/mavlink-router \
-# && git status \
-# && mkdir build \
-# && ./autogen.sh \
-# && ./configure CFLAGS='-g -O2' \
-#   --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
-#   --prefix=/usr \
-# && make \
-# && make install \
-# || (echo_stamp "Failed to build cmavnode!" "ERROR"; exit 1)
+echo_stamp "Build mavlink-router"
+cd /home/pi/mavlink-router \
+&& git status \
+&& mkdir build \
+&& ./autogen.sh \
+&& ./configure CFLAGS='-g -O2' \
+  --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
+  --prefix=/usr \
+&& make -j4 \
+&& make install \
+|| (echo_stamp "Failed to build cmavnode!" "ERROR"; exit 1)
 
-# echo_stamp "Build raw-wifi-link"
-# cd /home/pi/raw-wifi-link \
-# && git status \
-# && mkdir build \
-# && cd build \
-# && cmake .. \
-# && make install \
-# || (echo_stamp "Failed to build raw-wifi-link!" "ERROR"; exit 1)
+echo_stamp "Build raw-wifi-link"
+cd /home/pi/raw-wifi-link \
+&& git status \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make -j4 \
+&& make install \
+|| (echo_stamp "Failed to build raw-wifi-link!" "ERROR"; exit 1)
 
 echo_stamp "Build spdlog"
 cd /home/pi/spdlog \
@@ -157,6 +158,7 @@ cd /home/pi/spdlog \
 && mkdir build \
 && cd build \
 && cmake -DSPDLOG_BUILD_BENCH=OFF -DSPDLOG_BUILD_TESTS=OFF .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build spdlog!" "ERROR"; exit 1)
 
@@ -166,6 +168,7 @@ cd /home/pi/yaml-cpp \
 && mkdir build \
 && cd build \
 && cmake -DYAML_CPP_BUILD_TESTS=OFF .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build yaml-cpp!" "ERROR"; exit 1)
 
@@ -175,6 +178,7 @@ cd /home/pi/cxxopts \
 && mkdir build \
 && cd build \
 && cmake -DCXXOPTS_BUILD_EXAMPLES=OFF -DCXXOPTS_BUILD_TESTS=OFF .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build cxxopts!" "ERROR"; exit 1)
 
@@ -184,6 +188,7 @@ cd /home/pi/libseek-thermal \
 && mkdir build \
 && cd build \
 && cmake .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build libseek-thermal!" "ERROR"; exit 1)
 
@@ -193,6 +198,7 @@ cd /home/pi/raspicam \
 && mkdir build \
 && cd build \
 && cmake .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build raspicam!" "ERROR"; exit 1)
 
@@ -202,15 +208,17 @@ cd /home/pi/duocam-camera \
 && mkdir build \
 && cd build \
 && cmake .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build duocam-camera!" "ERROR"; exit 1)
 
 echo_stamp "Build duocam-mavlink"
-cd /home/pi/duocam-mavlink -DNO_EXAMPLES=ON \
+cd /home/pi/duocam-mavlink \
 && git status \
 && mkdir build \
 && cd build \
-&& cmake .. \
+&& cmake -DNO_EXAMPLES=ON .. \
+&& make -j4 \
 && make install \
 || (echo_stamp "Failed to build duocam-mavlink!" "ERROR"; exit 1)
 

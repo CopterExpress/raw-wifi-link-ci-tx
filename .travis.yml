@@ -7,7 +7,7 @@ env:
   - DOCKER="sfalexrog/img-tool:qemu-update"
   - TARGET_REPO="https://github.com/${TRAVIS_REPO_SLUG}.git"
   - if [[ -z ${TRAVIS_TAG} ]]; then IMAGE_VERSION="${TRAVIS_COMMIT}}"; else IMAGE_VERSION="${TRAVIS_TAG}"; fi
-  - IMAGE_NAME="raw-wifi-link-tx-${IMAGE_VERSION}.img"
+  - IMAGE_NAME="raw-wifi-link-tx_${IMAGE_VERSION}.img"
 git:
   depth: 50
 jobs:
