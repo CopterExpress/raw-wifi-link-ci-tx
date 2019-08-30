@@ -104,6 +104,7 @@ jobs:
     - git clone https://${GITHUB_USER}:${GITHUB_OAUTH_TOKEN}@github.com/CopterExpress/duocam-camera.git
     script:
       # - PYTHONUNBUFFERED=1 python ./gen_changelog.py
+      - true
 stages:
 - Build
 - Annotate

@@ -55,8 +55,7 @@ my_travis_retry() {
 
 echo_stamp "Update apt"
 
-apt-get update
-# && apt upgrade -y
+apt-get update && apt upgrade -y
 
 echo_stamp "Software installing"
 apt-get install --no-install-recommends -y \
@@ -99,6 +98,10 @@ libusb-1.0-0-dev \
 libsystemd-dev \
 libexiv2-dev \
 libv4l-dev \
+v4l2loopback-dkms \
+gstreamer1.0-tools \
+gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad \
 && echo_stamp "Everything was installed!" "SUCCESS" \
 || (echo_stamp "Some packages wasn't installed!" "ERROR"; exit 1)
 
@@ -221,6 +224,14 @@ cd /home/pi/duocam-mavlink \
 && make -j4 \
 && make install \
 || (echo_stamp "Failed to build duocam-mavlink!" "ERROR"; exit 1)
+
+echo_stamp "Reconfigure shared objects"
+ldconfig \
+|| (echo_stamp "Failed to reconfigure shared objects!" "ERROR"; exit 1)
+
+echo_stamp "Register v4l2loopback autostart"
+echo "v4l2loopback" >> /etc/modules \
+|| (echo_stamp "Failed to register v4l2loopback autostart!" "ERROR"; exit 1)
 
 echo_stamp "Add .vimrc"
 cat << EOF > /home/pi/.vimrc

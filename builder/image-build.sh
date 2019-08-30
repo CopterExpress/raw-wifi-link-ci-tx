@@ -123,5 +123,7 @@ ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} exec ${SCRIPTS_DIR}'/image-network.
 # Add rename script
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${SCRIPTS_DIR}'/assets/tx_rename' '/usr/local/bin/tx_rename'
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} exec ${SCRIPTS_DIR}'/image-validate.sh'
+# Add options v4l2loopback
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${SCRIPTS_DIR}'/assets/v4l2loopback.conf' '/etc/modprobe.d/v4l2loopback.conf'
 
 ${BUILDER_DIR}/image-resize.sh ${IMAGE_PATH}
