@@ -101,6 +101,8 @@ ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/yaml-cpp' '/home/p
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/spdlog' '/home/pi/spdlog'
 # Copy cxxopts repository contents to the image
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/cxxopts' '/home/pi/cxxopts'
+# Copy rtl8812au repository contents to the image
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/rtl8812au' '/home/pi/rtl8812au'
 # Copy libseek-thermal repository contents to the image
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${LIB_DIR}'/libseek-thermal' '/home/pi/libseek-thermal'
 # Copy raspicam repository contents to the image
@@ -125,5 +127,7 @@ ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${SCRIPTS_DIR}'/assets/tx_rena
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} exec ${SCRIPTS_DIR}'/image-validate.sh'
 # Add options v4l2loopback
 ${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${SCRIPTS_DIR}'/assets/v4l2loopback.conf' '/etc/modprobe.d/v4l2loopback.conf'
+# Update config for usbmode
+${BUILDER_DIR}/image-chroot.sh ${IMAGE_PATH} copy ${SCRIPTS_DIR}'/assets/usbmount.conf' '/etc/usbmount/usbmount.conf'
 
 ${BUILDER_DIR}/image-resize.sh ${IMAGE_PATH}

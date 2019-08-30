@@ -39,6 +39,17 @@ tx_rename ${NEW_SSID}
 echo_stamp "Harware setup"
 /root/hardware_setup.sh
 
+# TODO: Find a normal solution to build it in chroot
+echo_stamp "Build rtl8812au"
+cd /home/pi/rtl8812au \
+&& git status \
+&& ./dkms-install.sh \
+|| (echo_stamp "Failed to build rtl8812au!" "ERROR"; exit 1)
+
+echo_stamp "Register rtl8812au kernel module"
+echo "88XXau" >> /etc/modules \
+|| (echo_stamp "Failed to register rtl8812au kernel module!" "ERROR"; exit 1)
+
 echo_stamp "Remove init scripts"
 rm /root/init_rpi.sh /root/hardware_setup.sh
 

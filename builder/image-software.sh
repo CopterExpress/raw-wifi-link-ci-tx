@@ -54,8 +54,12 @@ my_travis_retry() {
 }
 
 echo_stamp "Update apt"
+apt-get update
+#&& apt upgrade -y
 
-apt-get update && apt upgrade -y
+echo_stamp "Upgrade kernel"
+apt-get install -y --only-upgrade raspberrypi-kernel raspberrypi-bootloader \
+|| (echo_stamp "Failed to upgrade kernel!" "ERROR"; exit 1)
 
 echo_stamp "Software installing"
 apt-get install --no-install-recommends -y \
@@ -102,6 +106,9 @@ v4l2loopback-dkms \
 gstreamer1.0-tools \
 gstreamer1.0-plugins-good \
 gstreamer1.0-plugins-bad \
+gstreamer1.0-omx \
+ntfs-3g \
+raspberrypi-kernel-headers \
 && echo_stamp "Everything was installed!" "SUCCESS" \
 || (echo_stamp "Some packages wasn't installed!" "ERROR"; exit 1)
 
@@ -122,6 +129,13 @@ rm get-pip.py
 echo_stamp "Make sure both pip is installed"
 pip --version
 
+echo_stamp "Install usbmount"
+cd /home/pi \
+&& wget https://github.com/nicokaiser/usbmount/releases/download/0.0.24/usbmount_0.0.24_all.deb \
+&& apt install --no-install-recommends -y ./usbmount_0.0.24_all.deb \
+&& rm ./usbmount_0.0.24_all.deb \
+|| (echo_stamp "Failed to install usbmount pymavlink!" "ERROR"; exit 1)
+
 echo_stamp "Check MAVLink repository status"
 cd /home/pi/mavlink && \
 git status
@@ -133,17 +147,17 @@ git status && \
 MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
 || (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
 
-echo_stamp "Build mavlink-router"
-cd /home/pi/mavlink-router \
-&& git status \
-&& mkdir build \
-&& ./autogen.sh \
-&& ./configure CFLAGS='-g -O2' \
-  --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
-  --prefix=/usr \
-&& make -j4 \
-&& make install \
-|| (echo_stamp "Failed to build cmavnode!" "ERROR"; exit 1)
+# echo_stamp "Build mavlink-router"
+# cd /home/pi/mavlink-router \
+# && git status \
+# && mkdir build \
+# && ./autogen.sh \
+# && ./configure CFLAGS='-g -O2' \
+#   --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib64 \
+#   --prefix=/usr \
+# && make -j4 \
+# && make install \
+# || (echo_stamp "Failed to build mavlink-router!" "ERROR"; exit 1)
 
 echo_stamp "Build raw-wifi-link"
 cd /home/pi/raw-wifi-link \
@@ -229,9 +243,9 @@ echo_stamp "Reconfigure shared objects"
 ldconfig \
 || (echo_stamp "Failed to reconfigure shared objects!" "ERROR"; exit 1)
 
-echo_stamp "Register v4l2loopback autostart"
+echo_stamp "Register v4l2loopback kernel module"
 echo "v4l2loopback" >> /etc/modules \
-|| (echo_stamp "Failed to register v4l2loopback autostart!" "ERROR"; exit 1)
+|| (echo_stamp "Failed to register v4l2loopback kernel module!" "ERROR"; exit 1)
 
 echo_stamp "Add .vimrc"
 cat << EOF > /home/pi/.vimrc

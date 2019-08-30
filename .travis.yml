@@ -43,6 +43,10 @@ jobs:
     - pushd cxxopts
     - git checkout v2.2.0
     - popd
+    - git clone https://github.com/aircrack-ng/rtl8812au.git
+    - pushd rtl8812au
+    - git checkout v5.2.20
+    - popd
     - git clone https://github.com/CopterExpress/libseek-thermal.git
     - git clone https://github.com/cedricve/raspicam.git
     - git clone https://${GITHUB_USER}:${GITHUB_OAUTH_TOKEN}@github.com/CopterExpress/mavlink-switch.git
