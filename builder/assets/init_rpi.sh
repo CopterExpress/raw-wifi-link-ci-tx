@@ -40,7 +40,7 @@ echo_stamp "Harware setup"
 /root/hardware_setup.sh
 
 # TODO: Find a normal solution to build it in chroot
-echo_stamp "Build rtl8812au"
+echo_stamp "Build rtl8812au (!THIS WILL TAKE A WHILE!)"
 cd /home/pi/rtl8812au \
 && git status \
 && ./dkms-install.sh \
