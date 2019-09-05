@@ -247,18 +247,6 @@ echo_stamp "Register v4l2loopback kernel module"
 echo "v4l2loopback" >> /etc/modules \
 || (echo_stamp "Failed to register v4l2loopback kernel module!" "ERROR"; exit 1)
 
-echo_stamp "Enable services"
-systemctl enable init-telemetry \
-&& systemctl enable joystick-udp-processor \
-&& systemctl enable mavlink-rx \
-&& systemctl enable mavlink-tx \
-&& systemctl enable start-virtual-ports \
-&& systemctl enable svpcom-rc-receiver \
-&& systemctl enable video-stream \
-&& systemctl enable wifi-monitor \
-&& systemctl enable mavlink-switch@hd.conf \
-|| (echo_stamp "Failed to enable services!" "ERROR"; exit 1)
-
 echo_stamp "Add .vimrc"
 cat << EOF > /home/pi/.vimrc
 set mouse-=a
