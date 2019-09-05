@@ -51,12 +51,16 @@ echo_stamp "#3 Turn on I2C"
 echo_stamp "#4 Turn on SPI"
 /usr/bin/raspi-config nonint do_spi 0
 
-# 5. Enable predictable network interface names
-echo_stamp "#5 Enable predictable network interface names"
+# 5. Enable raspicam
+echo_stamp "#5 Turn on raspicam"
+/usr/bin/raspi-config nonint do_camera 0
+
+# 6. Enable predictable network interface names
+echo_stamp "#6 Enable predictable network interface names"
 /usr/bin/raspi-config nonint do_net_names 0
 
-# 6. Enable hardware UART
-# echo_stamp "#5 Turn on UART"
+# 7. Enable hardware UART
+# echo_stamp "#7 Turn on UART"
 # Temporary solution
 # https://github.com/RPi-Distro/raspi-config/pull/75
 # /usr/bin/raspi-config nonint do_serial 1
