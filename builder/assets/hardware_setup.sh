@@ -51,7 +51,7 @@ echo_stamp "#3 Turn on I2C"
 echo_stamp "#4 Turn on SPI"
 /usr/bin/raspi-config nonint do_spi 0
 
-# 5. Enable SPI
+# 5. Enable predictable network interface names
 echo_stamp "#5 Enable predictable network interface names"
 /usr/bin/raspi-config nonint do_net_names 0
 
