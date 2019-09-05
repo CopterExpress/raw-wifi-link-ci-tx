@@ -30,10 +30,10 @@ echo_stamp() {
   echo -e ${TEXT}
 }
 
-echo_stamp "#1 Write to /etc/wpa_supplicant/wpa_supplicant.conf"
+echo_stamp "#1 Write to /etc/wpa_supplicant/wpa_supplicant-wlan1.conf"
 
-# TODO: Use wpa_cli insted direct file edit
-cat << EOF >> /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+# TODO: Use wpa_cli instead direct file edit
+cat << EOF >> /etc/wpa_supplicant/wpa_supplicant-wlan1.conf
 network={
     ssid="RAW-WIFI-TX"
     psk="rawwifitx"

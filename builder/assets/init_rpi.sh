@@ -33,7 +33,7 @@ echo_stamp() {
 
 echo_stamp "Rename SSID"
 NEW_SSID='RAW-WIFI-TX-'$(head -c 100 /dev/urandom | xxd -ps -c 100 | sed -e "s/[^0-9]//g" | cut -c 1-4)
-sudo sed -i.OLD "s/RAW-WIFI-TX/${NEW_SSID}/" /etc/wpa_supplicant/wpa_supplicant.conf
+sudo sed -i.OLD "s/RAW-WIFI-TX/${NEW_SSID}/" /etc/wpa_supplicant/wpa_supplicant-wlan1.conf
 tx_rename ${NEW_SSID}
 
 echo_stamp "Harware setup"
