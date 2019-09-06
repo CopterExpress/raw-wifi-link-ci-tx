@@ -147,6 +147,10 @@ git status && \
 MDEF=/home/pi/mavlink/message_definitions pip2 install . -v \
 || (echo_stamp "Failed to build pymavlink!" "ERROR"; exit 1)
 
+echo_stamp "Install python modules"
+my_travis_retry pip install enum34 pyyaml pyserial \
+|| (echo_stamp "Failed to install python modules!" "ERROR"; exit 1)
+
 # echo_stamp "Build mavlink-router"
 # cd /home/pi/mavlink-router \
 # && git status \
